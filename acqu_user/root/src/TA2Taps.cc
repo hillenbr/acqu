@@ -89,7 +89,7 @@ TA2Taps::TA2Taps(const char* name, TA2System* analysis)
   fTAPS_dEvE_Electron = kFALSE;     // default -> will be changed/set via ConfigFile
   fTimeShift          = 0.0;        // maybe will later use SvensTimeShift
   fTapsFudge          = 1.0;        // not in use
-  fTapsTargetDistance = 146.0;      // normal TAPS-Target Distance
+  fTapsTargetDistance = 193.7;      // normal TAPS-Target Distance                                                         vorher 146.0
   fTapsTimeshift      = 0.0;
   fDoFlightTimeCorrection=kFALSE;   // default -> chenge via ConfigFile
   fTaggerTime         = 0.0;        // center of TaggerTimePromptPeak ->via ConfigFile

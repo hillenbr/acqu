@@ -1,0 +1,28 @@
+#------------------------------------------------------------------------------
+#                  Configuration file for TA2MesonPhysics
+#             (AcquRoot 4v4 user package demonstration physics)
+#------------------------------------------------------------------------------
+#
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Target information: position (x,y,z) and mass in MeV
+Target: 0.0  0.0  0.0    938.2720    11188.1740
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Maximum number of detected particles to be accepted from different apparati.
+#This defines sizes of internal arrays; so don't select these numbers too
+#small...
+#             Tagger  Ball  TAPS
+Permutations: 256     32    16
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Standard AcquRoot option
+ParticleID:  256
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#Standard AcquRoot option
+Initialise:
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
