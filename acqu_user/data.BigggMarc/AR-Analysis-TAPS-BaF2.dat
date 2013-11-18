@@ -998,7 +998,7 @@ Display: 1D	TDCHits		438 0 438
 ## Energy deposited in individual crystals, 200 channels, range 0 -- 400 MeV
 ## Make histogram for each element (0-509) of the CB
 ##              Name            ch/low/high     imin/imax(opt)
-Display: 1D    Energy          2000  0 400     150 270
+#Display: 1D    Energy          2000  0 400     150 270
 ##
 ## Energy OR
 #Display: 1D    EnergyOR        2000  0 800
@@ -1008,7 +1008,7 @@ Display: 1D    Energy          2000  0 400     150 270
 ## Energy in each Cluster
 ## Make histogram for each element (0-509)  of the TAPS forward wall
 ##              Name            ch/low/high     imin/imax(opt)
-Display: 1D    ClEnergy        200 0 600       158 270
+#Display: 1D    ClEnergy        200 0 600       158 270
 ##
 ## Hit pattern within each cluster
 ##              Name            ch/low/high     imin/imax(opt)

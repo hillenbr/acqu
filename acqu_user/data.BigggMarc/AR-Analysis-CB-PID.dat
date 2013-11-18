@@ -39,8 +39,8 @@ Element:     121  0.000   50.0  146.96 0.009181  2013M0 -1000.0  1000.0 -3073.09
 
 #Replaced the 2 last PID elements with the 2 Channel from the detector module (2 PMT on one module ; all 24 PID Channels available)
 
-Element:     124  0.000   500.0  150.00 0.010418  2002M0 -1000.0  1000.0 -2725.34 0.117000   51.000    0.000  -15.036 
-Element:     125  0.000   50.0  150.00 0.010553  2003M0 -1000.0  1000.0 -2722.22 0.117000   51.000    0.000    0.160
+Element:     124  0.000   500.0  115.00 0.003418  2002M0 -1000.0  1000.0 -2725.34 0.117000   51.000    0.000  -15.036
+Element:     125  0.000   50.0  110.00 0.003553  2003M0 -1000.0  1000.0 -2722.22 0.117000   51.000    0.000    0.160
 #									   
 ## Do some further array initialisation BEFORE display specification	   
 Initialise:								   
@@ -52,10 +52,10 @@ Display:	1D	Hits		24	0	24
 ## Total Energy deposited in the array, 1000 channels, range 0 -- 200 MeV  
 #Display:	1D	Etot	 400 	0 	200			   
 ## Energy deposited in individual elements, 200 channels, range 0 -- 20 MeV
-Display:	1D	Energy	200 0 50	0 23				   
+Display:	1D	Energy	200 0 50	20 23
 #									   
 Display:	1D	EnergyOR 100  0. 100.				   
 Display:	1D	TimeOR 200 -100. 100.				   
-Display:	1D	Time   200 -100 100	0 23			   
+Display:	1D	Time   200 -100 100	20 23
 #Display:	2D	TimeOR 1000 -500. 500 -1 Hits 24 0 24 -1
 #

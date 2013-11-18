@@ -207,6 +207,7 @@ void TA2BasePhysics::PostInit()
   //Allocate memory
   Photon = new TA2Particle[nPart]; //TA2Particle carrying photon informations
   Proton = new TA2Particle[nPart]; //TA2Particle carrying proton informations
+  ProtonMarc = new TA2Particle[nPart]; //TA2Particle carrying proton informations
   PiPlus = new TA2Particle[nPart]; //TA2Particle carrying pi+ informations
 
   //Find pointers to apparati
@@ -299,6 +300,7 @@ void TA2BasePhysics::PostInit()
 void TA2BasePhysics::Reconstruct()
 {
   nPhoton = 0;
+  nProtonMarc = 0;
   nProton = 0;
   nPiPlus = 0;
   nTagged = 0;
@@ -412,6 +414,8 @@ void TA2BasePhysics::Reconstruct()
       else if(TAPS->GetParticles(nTAPS).GetParticleID()==kProton) //If it is a proton in TAPS...
       {
         Proton[nProton] = TAPS->GetParticles(nTAPS);              //...copy to proton TA2Particle array
+        ProtonMarc[nProtonMarc] = TAPS->GetParticles(nTAPS);
+        nProtonMarc++;
         nProton++;
       }
       else if(TAPS->GetParticles(nTAPS).GetParticleID()==kPiPlus) //If it is a proton in TAPS...

@@ -58,7 +58,7 @@ TAPS_TOF_TaggerTime:  0
 #Set distance between TAPS and target centre for correct TOF calculation.
 #Additional correction for longer flight path to outer rings is possible.
 #TAPSTargetDistance:  141.2
-TAPSTargetDistance:  193.7
+TAPSTargetDistance:  197.35
 TAPSDoFlightTimeCorrection:  1
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
@@ -100,6 +100,6 @@ Display: 2D Echargedcl       400   0   400  -1  TOFproton    400  -50    50  -1
 Display: 1D TOFproton        800  -200   200
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
-Display: 2D BaF2_Energy   400 0 400 318 Veto_Energy   300 0 6 318
-Display: 2D BaF2_EnergyOR 400 0 400  -1 Veto_EnergyOR 300 0 6  -1
+#Display: 2D BaF2_Energy   400 0 400 318 Veto_Energy   300 0 6 318
+#Display: 2D BaF2_EnergyOR 400 0 400  -1 Veto_EnergyOR 300 0 6  -1
 #
