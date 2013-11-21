@@ -78,13 +78,21 @@ class TA2BasePhysics : public TA2Physics
     Int_t nWall;           //Maximum number of detected particles in (TAPS) Wall
     Int_t nPart;           //Maximum number of detected particles (CB + TAPS)
     Int_t nPhoton;         //Number of detected photons
+    Int_t nPhotonMarc;         //Number of detected photons
     Int_t nProton;         //Number of detected protons
     Int_t nProtonMarc;     //Number of detected protons
+    Int_t nProtonMarc1;     //Number of detected protons
+    Int_t nProtonMarc2;     //Number of detected protons
     Int_t nPiPlus;         //Number of detected pi+s
+    Int_t nPiPlusMarc;         //Number of detected pi+s
     TA2Particle* Photon;   //TA2Particle carrying all information about detected photons (CB/TAPS)
+    TA2Particle* PhotonMarc;   //TA2Particle carrying all information about detected photons (CB/TAPS)
     TA2Particle* Proton;   //TA2Particle carrying all information about detected protons (CB/TAPS)
     TA2Particle* ProtonMarc; //TA2Particle carrying all information about detected protons (CB/TAPS)
+    TA2Particle* ProtonMarc1; //TA2Particle carrying all information about detected protons (CB/TAPS)
+    TA2Particle* ProtonMarc2; //TA2Particle carrying all information about detected protons (CB/TAPS)
     TA2Particle* PiPlus;   //TA2Particle carrying all information about detected pi+s (CB/TAPS)
+    TA2Particle* PiPlusMarc;   //TA2Particle carrying all information about detected pi+s (CB/TAPS)
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

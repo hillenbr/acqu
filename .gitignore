@@ -15,6 +15,11 @@
 *.la
 *.a
 
+# exclude root and pdf files as well as some useless dat files
+*.root
+*.pdf
+Thread*.dat
+
 # CMake
 # only build dirs are ignored
 /build*/

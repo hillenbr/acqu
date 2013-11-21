@@ -190,6 +190,12 @@ void TA2BasePhysics::LoadVariable()
   TA2DataManager::LoadVariable("NPhoton", &nPhoton, EISingleX);
   TA2DataManager::LoadVariable("NProton", &nProton, EISingleX);
   TA2DataManager::LoadVariable("NPiPlus", &nPiPlus, EISingleX);
+
+  TA2DataManager::LoadVariable("NProtonMarc", &nProtonMarc, EISingleX);
+  TA2DataManager::LoadVariable("NProtonMarc1", &nProtonMarc, EISingleX);
+  TA2DataManager::LoadVariable("NProtonMarc2", &nProtonMarc, EISingleX);
+  TA2DataManager::LoadVariable("NPhotonMarc", &nPhotonMarc, EISingleX);
+  TA2DataManager::LoadVariable("NPiPlusMarc", &nPiPlusMarc, EISingleX);
 }
 
 //---------------------------------------------------------------------------
@@ -206,9 +212,13 @@ void TA2BasePhysics::PostInit()
 
   //Allocate memory
   Photon = new TA2Particle[nPart]; //TA2Particle carrying photon informations
+  PhotonMarc = new TA2Particle[nPart]; //TA2Particle carrying photon informations
   Proton = new TA2Particle[nPart]; //TA2Particle carrying proton informations
   ProtonMarc = new TA2Particle[nPart]; //TA2Particle carrying proton informations
+  ProtonMarc1 = new TA2Particle[nPart]; //TA2Particle carrying proton informations
+  ProtonMarc2 = new TA2Particle[nPart]; //TA2Particle carrying proton informations
   PiPlus = new TA2Particle[nPart]; //TA2Particle carrying pi+ informations
+  PiPlusMarc = new TA2Particle[nPart]; //TA2Particle carrying pi+ informations
 
   //Find pointers to apparati
   nChilds = ((TList*)(((TA2Analysis*)fParent)->GetChildren()))->GetEntries(); //Get number of TA2Analysis children (i.e. apparati)
@@ -300,8 +310,12 @@ void TA2BasePhysics::PostInit()
 void TA2BasePhysics::Reconstruct()
 {
   nPhoton = 0;
+  nPhotonMarc = 0;
   nProtonMarc = 0;
+  nProtonMarc1 = 0;
+  nProtonMarc2 = 0;
   nProton = 0;
+  nPiPlusMarc = 0;
   nPiPlus = 0;
   nTagged = 0;
   ESum = EBufferEnd; //Clear CB energy sum spectrum
@@ -409,6 +423,8 @@ void TA2BasePhysics::Reconstruct()
       if(TAPS->GetParticles(nTAPS).GetParticleID()==kGamma) //If it is a photon in TAPS...
       {
         Photon[nPhoton] = TAPS->GetParticles(nTAPS);        //...copy to photon TA2Particle array
+        PhotonMarc[nPhotonMarc] = TAPS->GetParticles(nTAPS);        //...copy to photon TA2Particle array
+        nPhotonMarc++;
         nPhoton++;
       }
       else if(TAPS->GetParticles(nTAPS).GetParticleID()==kProton) //If it is a proton in TAPS...
@@ -416,11 +432,17 @@ void TA2BasePhysics::Reconstruct()
         Proton[nProton] = TAPS->GetParticles(nTAPS);              //...copy to proton TA2Particle array
         ProtonMarc[nProtonMarc] = TAPS->GetParticles(nTAPS);
         nProtonMarc++;
+        ProtonMarc1[nProtonMarc1] = TAPS->GetParticles(nTAPS);
+        nProtonMarc1++;
+        ProtonMarc2[nProtonMarc2] = TAPS->GetParticles(nTAPS);
+        nProtonMarc2++;
         nProton++;
       }
       else if(TAPS->GetParticles(nTAPS).GetParticleID()==kPiPlus) //If it is a proton in TAPS...
       {
         PiPlus[nPiPlus] = TAPS->GetParticles(nTAPS);              //...copy to proton TA2Particle array
+        PiPlusMarc[nPiPlusMarc] = TAPS->GetParticles(nTAPS);              //...copy to proton TA2Particle array
+        nPiPlusMarc++;
         nPiPlus++;
       }
     }
@@ -431,7 +453,7 @@ void TA2BasePhysics::Reconstruct()
 	Tagged = Tagger->GetParticles();
 	nTagged = Tagger->GetNParticle();
   }
-  
+ // printf("Base: %d\n", BaF2->GetNCluster());
 }
 
 //-----------------------------------------------------------------------------

@@ -70,7 +70,7 @@ Initialise:
 ## The procedures are usually held in macro script files
 ## Period...every N events
 ##        N         Macro File          Macro Procedure
-Period:	  1000    root/macros/PeriodMacro.C	PeriodMacro()
+*Period:	  1000    root/macros/PeriodMacro.C	PeriodMacro()
 #Epics:	  EpicsHistograms.C		DumpEpicsBuffers("EpicsDump.txt")
 ##
 ## EndFile...each time an input data file is closed

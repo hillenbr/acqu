@@ -1,5 +1,5 @@
 #include "TA2MesonPhysics.h"
-
+int GLOBAL_COUNT = 0;
 ClassImp(TA2MesonPhysics)
 
 //-----------------------------------------------------------------------------
@@ -13,14 +13,7 @@ TA2MesonPhysics::TA2MesonPhysics(const char* Name, TA2Analysis* Analysis) : TA2B
   PID_Hits                = new Int_t[24];
   Veto_Hits               = new Int_t[437];
 
-  hist[0]=0;
-  hist[1]=0;
-  hist[2]=0;
-  hist[6]=0;
-  //hist[3]=0;
-  //hist[4]=0;
-  //hist[5]=0;
-  coveredCrystals.push_back(23);
+  coveredCrystals.push_back(23);     // BaF2 which could be behind the Pizza Detector
   coveredCrystals.push_back(29);
   coveredCrystals.push_back(35);
   coveredCrystals.push_back(36);
@@ -31,6 +24,10 @@ TA2MesonPhysics::TA2MesonPhysics(const char* Name, TA2Analysis* Analysis) : TA2B
   coveredCrystals.push_back(50);
   coveredCrystals.push_back(51);
   coveredCrystals.push_back(52);
+  coveredCrystals.push_back(53);
+  coveredCrystals.push_back(61);
+  coveredCrystals.push_back(62);
+  coveredCrystals.push_back(63);
   coveredCrystals.push_back(86);
   coveredCrystals.push_back(87);
   coveredCrystals.push_back(88);
@@ -44,28 +41,21 @@ TA2MesonPhysics::TA2MesonPhysics(const char* Name, TA2Analysis* Analysis) : TA2B
   coveredCrystals.push_back(97);
   coveredCrystals.push_back(98);
   coveredCrystals.push_back(99);
+  coveredCrystals.push_back(100);
   coveredCrystals.push_back(103);
   coveredCrystals.push_back(104);
+  coveredCrystals.push_back(110);
   coveredCrystals.push_back(158);
   coveredCrystals.push_back(161);
   coveredCrystals.push_back(162);
-  fcoveredCrystals.push_back(29);
-  fcoveredCrystals.push_back(36);
-  fcoveredCrystals.push_back(42);
+  fcoveredCrystals.push_back(36);    // BaF2 which should be completely (at least 80-90%) behind the Pizza Detector
   fcoveredCrystals.push_back(43);
+  fcoveredCrystals.push_back(44);
   fcoveredCrystals.push_back(90);
   fcoveredCrystals.push_back(92);
   fcoveredCrystals.push_back(93);
   fcoveredCrystals.push_back(97);
-  fcoveredCrystal.push_back(28);
-  fcoveredCrystal.push_back(35);
-  fcoveredCrystal.push_back(41);
-  fcoveredCrystal.push_back(42);
-  fcoveredCrystal.push_back(89);
-  fcoveredCrystal.push_back(91);
-  fcoveredCrystal.push_back(92);
-  fcoveredCrystal.push_back(96);
-  dCrystals.push_back(310);
+  dCrystals.push_back(310);          // BaF2 which are definitely not behind the Pizza detector
   dCrystals.push_back(311);
   dCrystals.push_back(312);
   dCrystals.push_back(313);
@@ -113,63 +103,63 @@ void TA2MesonPhysics::LoadVariable()
 void TA2MesonPhysics::PostInit()
 {
 
-    // NaI
+    // PID
     fPID = (TA2PlasticPID*)((TA2Analysis*)fParent)->GetGrandChild("PID");
     if ( !fPID) PrintError( "", "<No NaI class found>", EErrFatal);
 
-    // NaI
+    // Veto
     fVeto = (TA2PlasticPID*)((TA2Analysis*)fParent)->GetGrandChild("Veto");
     if ( !fVeto) PrintError( "", "<No NaI class found>", EErrFatal);
 
   //Call default PostInit()
   TA2BasePhysics::PostInit();
 
-  hist[0]	= new TH1I("ADC_PMTlinks", "ADC_PMTlinks", 5000, 0, 5000);
-  hist[1]	= new TH1I("ADC_PMTrechts", "ADC_PMTrechts", 5000, 0, 5000);
-  hist[2]	= new TH1I("ADC_beidePMT", "ADC_beidePMT", 10000, 0, 10000);
-  hist[6]	= new TH1I("ADC_Proton_in_TAPS", "ADC_Proton_in_TAPS", 10000, 0, 10000);
-  adcarea	= new TH1I("ADC_moeglicheBaF2", "ADC_moeglicheBaF2", 10000, 0, 10000);
-  adcfull	= new TH1I("ADC_definitiveBaF2", "ADC_definitiveBaF2", 10000, 0, 10000);
-  adcfull1	= new TH1I("ADC_definitiveBaF2_minus1", "ADC_definitiveBaF2_minus1", 10000, 0, 10000);
-  adcdiff	= new TH1I("ADC_unmoeglicheBaF2", "ADC_unmoeglicheBaF2", 10000, 0, 10000);
-  hist[3]	= new TH1I("TDC_links", "TDC_links", 150000, -145000, 5000);
-  hist[4]	= new TH1I("TDC_rechts", "TDC_rechts", 150000, -145000, 5000);
-  hist[5]	= new TH1I("TDC_beide", "TDC_beide", 15000, -10000, 5000);
-  //hist[6]	= new TH1I("CombinedTDCAdd", "CombinedTDCAdd", 15000, -10000, 5000);
-  /*TAPS_adcarea	= new TH1I("TAPS_adcarea", "TAPS_adcarea", 10000, 0, 1000000000);
-  TAPS_adcfull	= new TH1I("TAPS_adcfull", "TAPS_adcfull", 10000, 0, 1000000000);
-  TAPS_adcfull1	= new TH1I("TAPS_adcfull1", "TAPS_adcfull1", 10000, 0, 1000000000);
-  TAPS_adcdiff	= new TH1I("TAPS_adcdiff", "TAPS_adcdiff", 10000, 0, 1000000000);*/
+  hist[0]                       = new TH1I("ADC_PMTlinks", "ADC_PMTlinks", 4100, 0, 4100);
+  hist[1]                       = new TH1I("ADC_PMTrechts", "ADC_PMTrechts", 4100, 0, 4100);
+  hist[2]                       = new TH1I("ADC_beidePMT", "ADC_beidePMT", 8200, 0, 8200);
+  hist[3]                       = new TH1I("TDC_links", "TDC_links", 15000, -10000, 5000);
+  hist[4]                       = new TH1I("TDC_rechts", "TDC_rechts", 15000, -10000, 5000);
+  hist[5]                       = new TH1I("TDC_beide", "TDC_beide", 15000, -10000, 5000);
+  hist[6]                       = new TH1I("ADC_Proton_in_TAPS", "ADC_Proton_in_TAPS", 10000, 0, 10000);
+  ADC_moeglicheKristalle	= new TH1I("ADC_BaF2area", "ADC_BaF2area", 10000, 0, 10000);
+  ADC_PizzaHitBaF2area          = new TH1I("ADC_PizzaHitBaF2area", "ADC_PizzaHitBaF2area", 10000, 0, 10000);
+  VetoADC_BaF2area	        = new TH1I("VetoADC_BaF2area", "VetoADC_BaF2area", 100, 0, 10);
+  VetoADC_BaF2full	        = new TH1I("VetoADC_BaF2full", "VetoADC_BaF2full", 100, 0, 10);
+  ADC_CutCrystals               = new TH1I("ADC_BaF2area_Cut", "ADC_BaF2area_Cut", 10000, 0, 10000);
+  adcarea                       = new TH1I("ADC_BaF2area_Proton", "ADC_BaF2area_Proton", 10000, 0, 10000);
+  adcarea1                      = new TH1I("ADC_BaF2area_Photon", "ADC_BaF2area_Photon", 10000, 0, 10000);
+  adcarea2                      = new TH1I("ADC_BaF2area_PiPLus", "ADC_BaF2area_PiPLus", 10000, 0, 10000);
+  adcfull                       = new TH1I("ADC_BaF2full_Proton", "ADC_BaF2full_Proton", 10000, 0, 10000);
+  adcdiff                       = new TH1I("ADC_BaF2diff_Proton", "ADC_BaF2diff_Proton", 10000, 0, 10000);
+  EnergyVeto                    = new TH1D("VetoE", "VetoE", 1000, 0, 10);
+  dEvE_OR                       = new TH2D("dEvE_Veto", "dEvE_Veto", 700, 0, 700, 100, 0, 10);
+  dEvE_Pizza                    = new TH2D("dEvE_Pizza", "dEvE_Pizza", 700, 0, 700, 410, 0, 8200);
+  dEvE_Pizza1                   = new TH2D("dEvE_PMTlinks", "dEvE_PMTlinks", 700, 0, 700, 210, 0, 4200);
+  dEvE_Pizza2                   = new TH2D("dEvE_PMTrechts", "dEvE_PMTrechts", 700, 0, 700, 210, 0, 4200);
+  dEvE_Veto29                   = new TH2D("dEvE_Veto29", "dEvE_Veto29", 700, 0, 700, 300, 0, 1500);
+  VetoCut_dEvE_Pizza            = new TH2D("VetoCut_dEvE_Pizza", "VetoCut_dEvE_Pizza", 700, 0, 700, 410, 0, 8200);
+  VetoCut_dEvE_Veto             = new TH2D("VetoCut_dEvE_Veto", "VetoCut_dEvE_Veto", 700, 0, 700, 100, 0, 10);
+  PizzaCut_dEvE_Pizza           = new TH2D("PizzaCut_dEvE_Pizza", "PizzaCut_dEvE_Pizza", 700, 0, 700, 410, 0, 8200);
+  PizzaCut_dEvE_Veto            = new TH2D("PizzaCut_dEvE_Veto", "PizzaCut_dEvE_Veto", 700, 0, 700, 100, 0, 10);
+  dEvE_BaF2area                 = new TH2D("dEvE_BaF2area_Proton", "dEvE_BaF2area_Proton", 900, 0, 900, 410, 0, 8200);
+  dEvE_BaF2diff                 = new TH2D("dEvE_BaF2diff_Proton", "dEvE_BaF2diff_Proton", 900, 0, 900, 410, 0, 8200);
+  dEvE_BaF2full                 = new TH2D("dEvE_BaF2full_Proton", "dEvE_BaF2full_Proton", 900, 0, 900, 410, 0, 8200);
+  dEvE_adcarea1                 = new TH2D("dEvE_BaF2area_Photon", "dEvE_BaF2area_Photon", 900, 0, 900, 410, 0, 8200);
+  dEvE_adcarea2                 = new TH2D("dEvE_BaF2area_PiPlus", "dEvE_BaF2area_PiPlus", 900, 0, 900, 410, 0, 8200);
+  precuthist                    = new TH1D("ADC_PMT_BaF2_Cluster", "ADC_PMT_BaF2_Cluster", 8200, 0, 8200);
+  cuthist1                      = new TH1D("ADC_PMT_BaF2_Cluster_PizzaCut", "ADC_PMT_BaF2_Cluster_PizzaCut", 8200, 0, 8200);
+  cuthist                       = new TH1D("ADC_PMT_BaF2_Cluster_VetoCut", "ADC_PMT_BaF2_Cluster_VetoCut", 8200, 0, 8200);
+  ADCvE_PizzaHitBaF2area        = new TH2D("ADCvE_BaF2area", "ADCvE_BaF2area", 800, 0, 800, 410, 0, 8200);
+  ADCvE_ProtonPizzaCutBaF2area  = new TH2D("ADCvE_BaF2area_PizzaCut", "ADCvE_BaF2area_PizzaCut", 800, 0, 800, 410, 0, 8200);
+  VetovE_ProtPizzaCutBaF2area   = new TH2D("VetoADCvE_BaF2Area", "VetoADCvE_BaF2Area", 800, 0, 800, 100, 0, 10);
+  VetovE_ProtPizzaCutBaF2full   = new TH2D("VetoADCvE_BaF2Full", "VetoADCvE_BaF2Full", 800, 0, 800, 100, 0, 10);
+  // Count Histograms
+  count                         = new TH1I("Counts","Counts",10,0,10);
+  Treffer                       = new TH1I("VetoHits_when_PizzaHit","VetoHits_when_PizzaHit",438,0,438);
+  TrefferProt                   = new TH1I("VetoHits_when_PizzaProton_and_BaF2_Cluster","VetoHits_when_PizzaProton_and_BaF2_Cluster",438,0,438);
+  TrefferProt1                  = new TH1I("VetoHits_when_PizzaHit_and_BaF2_Cluster","VetoHits_when_PizzaHit_and_BaF2_Cluster",438,0,438);
+  TrefferProtVeto               = new TH1I("VetoHits_when_VetoProton","VetoHits_when_VetoProton",438,0,438);
 
-        count	           = new TH1I("Zaehler","Zaehler",10,0,10);
-        Treffer	           = new TH1I("Counts","Counts",438,0,438);
-        TrefferProt	   = new TH1I("CountsProt","CountsProt",438,0,438);
-        TrefferVeto        = new TH1I("CountsVeto","CountsVeto",438,0,438);
-        TrefferProtVeto    = new TH1I("CountsProtVeto","CountsProtVeto",438,0,438);
-        //TrefferPCProtVeto  = new TH1I("CountsPCProtVeto","CountsPCProtVeto",438,0,438);
-
-  char    str[64];
-    /*for(int i=0; i<BaF2->GetNelem(); i++)
-    {
-      sprintf(str,"dEvE_%d", i);
-        dEvE[i]          = new TH2D(str, str, 1000, 0, 1000, 100, 0, 10);
-    }*/
-    EnergyVeto           = new TH1D("VetoE", "VetoE", 1000, 0, 10);
-    dEvE_OR              = new TH2D("dEvE_Veto", "dEvE_Veto", 1000, 0, 1000, 100, 0, 10);
-    //dEvE_OR1             = new TH2D("dEvE_OR1", "dEvE_OR1", 1000, 0, 1000, 8200, 0, 10);
-    dEvE_Pizza           = new TH2D("dEvE_Pizza", "dEvE_Pizza", 1000, 0, 1000, 8200, 0, 8200);
-    dEvE_Pizza1          = new TH2D("dEvE_PMTlinks", "dEvE_PMTlinks", 1000, 0, 1000, 4200, 0, 4200);
-    dEvE_Pizza2          = new TH2D("dEvE_PMTrechts", "dEvE_PMTrechts", 1000, 0, 1000, 4200, 0, 4200);
-    dEvE_Veto28          = new TH2D("dEvE_Veto28", "dEvE_Veto28", 1000, 0, 1000, 15000, 0, 1500);
-    dEvE_Veto29          = new TH2D("dEvE_Veto29", "dEvE_Veto29", 1000, 0, 1000, 15000, 0, 1500);
-    dEvE_Veto30          = new TH2D("dEvE_Veto30", "dEvE_Veto30", 1000, 0, 1000, 15000, 0, 1500);
-    VetoCut_dEvE_Pizza   = new TH2D("VetoCut_dEvE_Pizza", "VetoCut_dEvE_Pizza", 1000, 0, 1000, 8200, 0, 8200);
-    VetoCut_dEvE_Veto    = new TH2D("VetoCut_dEvE_Veto", "VetoCut_dEvE_Veto", 1000, 0, 1000, 100, 0, 10);
-    PizzaCut_dEvE_Pizza  = new TH2D("PizzaCut_dEvE_Pizza", "PizzaCut_dEvE_Pizza", 1000, 0, 1000, 8200, 0, 8200);
-    PizzaCut_dEvE_Veto   = new TH2D("PizzaCut_dEvE_Veto", "PizzaCut_dEvE_Veto", 1000, 0, 1000, 100, 0, 10);
-    precuthist           = new TH1D("Precut", "Precut", 8200, 0, 8200);
-    cuthist1             = new TH1D("PizzaCut", "PizzaCut", 8200, 0, 8200);
-    cuthist              = new TH1D("VetoCut", "VetoCut", 8200, 0, 8200);
   //Call master default PostInit()
   TA2Physics::PostInit();
 }
@@ -178,45 +168,105 @@ void TA2MesonPhysics::PostInit()
 
 void TA2MesonPhysics::Reconstruct()
 {
-  //Perform basic physics tasks
+ VarInit();
+
+ //Perform basic physics tasks
  TA2BasePhysics::Reconstruct();
 
+ // Get Detector Hits
+ nVeto_Hits      = fVeto->GetNhits();
+ nPID_Hits       = fPID->GetNhits();
+ Bool_t pizzahit = false;
+ for(int i=0; i<nPID_Hits; i++) {
+     PID_Hits[i] = fPID->GetHits(i);
+     if(PID_Hits[i] == 22 || PID_Hits[i] == 23) pizzahit=true;
+ }
+ //skip other stuff if no event is detected in my pizza slice
 
-        Double_t* vetoE = TAPS->GetVeto()->GetEnergyOR();
-        Double_t* baFlE = BaF2->GetEnergyOR();
-        //Double_t* baFlE = BaF2->GetEnergyAll()
+ //if(!pizzahit) return;
 
-        Double_t* ClE = BaF2->GetClEnergyOR();
-        Bool_t pizzahitprot = false;
+ // Introducing: "The Energies" and "The Clusters"
 
-        for(int i=0; i<BaF2->GetNCluster(); i++)
+ Double_t* vetoE     = TAPS->GetVeto()->GetEnergyOR();
+ Double_t* baFlE     = BaF2->GetEnergyOR();
+ Double_t* ClE       = BaF2->GetClEnergyOR();
+ UInt_t* testclust   = BaF2->GetClustHit();
+ Bool_t pizzahitprot = false;
+ HitCluster_t* tmpclust;
+
+ // ADC Spectra from Pizza Detector
+
+        hist[0]->Fill((gAR->GetADC())[124]);
+        hist[1]->Fill((gAR->GetADC())[125]);
+        hist[2]->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+
+     // Protons in TAPS, nProtonMarc from Basephysics
+     if(nProtonMarc > 0)
+        hist[6]->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+
+
+ // TDC Spectra from Pizza Detector
+
+        for(int i=0; i<gAR->GetMulti(2002)->GetNstore(); i++)
+                hist[3]->Fill(gAR->GetMulti(2002)->GetHit(i));
+        for(int i=0; i<gAR->GetMulti(2003)->GetNstore(); i++)
+                hist[4]->Fill(gAR->GetMulti(2003)->GetHit(i));
+        count->Fill(1);
+
+        if(gAR->GetMulti(2002)->GetNstore() == 1)
         {
-            HitCluster_t* tmpclust = BaF2->GetCluster(i);
+                if(gAR->GetMulti(2003)->GetNstore() == 1)
+                {
+                        count->Fill(8);
+                        hist[5]->Fill(gAR->GetMulti(2002)->GetHit(0) - gAR->GetMulti(2003)->GetHit(0));
+                }
+        }
 
-            //dEvE[i]->Fill(baFlE[i],vetoE[i]);
-            //printf("dEvE_OR->Fill(%f,%f)\n", BaF2->GetCluster(i)->GetEnergy(), vetoE[(BaF2->GetCluster(i)->GetHits())[0]]);
-            //unsigned int tmp = (BaF2->GetCluster(i)->GetHits())[0];
-            //UInt_t* temp = BaF2->GetCluster(i)->GetHits();
+ // Loop over all Cluster in TAPS
+
+ for(int i=0; i<BaF2->GetNCluster(); i++)
+        {
+            tmpclust = BaF2->GetCluster(i);
             dEvE_OR->Fill(ClE[i],vetoE[tmpclust->GetIndex()]);
             EnergyVeto->Fill(vetoE[tmpclust->GetIndex()]);
-            //dEvE_OR1->Fill(ClE[i],vetoE[tmpclust->GetIndex()]);
             dEvE_Pizza->Fill(ClE[i],(gAR->GetADC())[124] + (gAR->GetADC())[125]);
             dEvE_Pizza1->Fill(ClE[i],(gAR->GetADC())[124]);
             dEvE_Pizza2->Fill(ClE[i],(gAR->GetADC())[125]);
             dEvE_Veto29->Fill(ClE[i],(gAR->GetADC())[26075]);
-            dEvE_Veto28->Fill(ClE[i],(gAR->GetADC())[26074]);
-            dEvE_Veto30->Fill(ClE[i],(gAR->GetADC())[26076]);
             precuthist->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
 
-            /*if(4.2-(0.01*ClE[i]) < vetoE[tmpclust->GetIndex()])
-            {
-                VetoCut_dEvE_Veto->Fill(ClE[i],vetoE[tmpclust->GetIndex()]);
-                VetoCut_dEvE_Pizza->Fill(ClE[i],(gAR->GetADC())[124] + (gAR->GetADC())[125]);
-                cuthist->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+ // Loop BaF2 Cluster - Only Cluster in BaF2, which are possibly behind the Pizza Detector
+
+            if(std::find(coveredCrystals.begin(), coveredCrystals.end(), testclust[i]) != coveredCrystals.end()){
+            VetovE_ProtPizzaCutBaF2area->Fill(ClE[i],TAPS->GetVeto()->GetEnergy(testclust[i]));
+            VetoADC_BaF2area->Fill(TAPS->GetVeto()->GetEnergy(testclust[i]));
+            ADC_moeglicheKristalle->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
             }
-            else
-            {
-            }*/
+
+ // Loop BaF2 Cluster - Only Cluster in BaF2, which are definitely behind the Pizza Detector
+
+            if(std::find(fcoveredCrystals.begin(), fcoveredCrystals.end(), testclust[i]) != fcoveredCrystals.end()){
+            VetovE_ProtPizzaCutBaF2full->Fill(ClE[i],TAPS->GetVeto()->GetEnergy(testclust[i]));
+            VetoADC_BaF2full->Fill(TAPS->GetVeto()->GetEnergy(testclust[i]));
+            }
+
+ // Loop BaF2 Cluster - Hit in Pizza Detector
+
+            if(pizzahit){
+                for(int j=0; j<nVeto_Hits; j++)
+                    TrefferProt1->Fill(fVeto->GetHits(j));
+
+ // Loop BaF2 Cluster - Hit Pizza Detector - Only Cluster in BaF2, which are possibly behind the Pizza Detector
+
+                if(std::find(coveredCrystals.begin(), coveredCrystals.end(), testclust[i]) != coveredCrystals.end()){
+                    ADCvE_PizzaHitBaF2area->Fill(ClE[i],(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                    ADC_PizzaHitBaF2area->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                }
+            }
+
+ // Loop BaF2 Cluster - Simple Cuts on dEvE Veto-TAPS and Pizza-TAPS
+
+            // Cut on Veto Energy
             if((2.9*(TMath::Exp(-0.0105*ClE[i]))+2.1) < vetoE[tmpclust->GetIndex()])
             {
                 VetoCut_dEvE_Veto->Fill(ClE[i],vetoE[tmpclust->GetIndex()]);
@@ -226,79 +276,47 @@ void TA2MesonPhysics::Reconstruct()
             else
             {
             }
-            if((2200*(TMath::Exp(-0.008523741*ClE[i]))+2300) < (gAR->GetADC())[124] + (gAR->GetADC())[125])
+            // Cut on Pizza ADC
+            if((2200*(TMath::Exp(-0.008524*ClE[i]))+2300) < (gAR->GetADC())[124] + (gAR->GetADC())[125])
             {
                 PizzaCut_dEvE_Pizza->Fill(ClE[i],(gAR->GetADC())[124] + (gAR->GetADC())[125]);
                 PizzaCut_dEvE_Veto->Fill(ClE[i],vetoE[tmpclust->GetIndex()]);
                 cuthist1->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-                pizzahitprot = true;
+                // Hit in Pizza Detector
+                if(pizzahit){
+                    for(int j=0; j<nVeto_Hits; j++)
+                        TrefferProt->Fill(fVeto->GetHits(j));
+                    // Cluster in BaF2, which is possibly covered by the Pizza Detector
+                    if(std::find(coveredCrystals.begin(), coveredCrystals.end(), testclust[i]) != coveredCrystals.end()){
+                        ADCvE_ProtonPizzaCutBaF2area->Fill(ClE[i],(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        ADC_CutCrystals->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                    }
+                }
             }
             else
             {
             }
         }
 
+ // End Loop
+ //
 
-        nVeto_Hits = fVeto->GetNhits();
-
-           for(int i=0; i<nVeto_Hits; i++) {
-               TrefferVeto->Fill(fVeto->GetHits(i));
+ // Counts Veto Hits
+ for(int i=0; i<nVeto_Hits; i++) {
+               // Proton Hits in Veto
                if(nProtonMarc > 0){
                    TrefferProtVeto->Fill(fVeto->GetHits(i));
                }
            }
-
-
- // Get Detector Hits
- nPID_Hits = fPID->GetNhits();
- Bool_t pizzahit = false;
- for(int i=0; i<nPID_Hits; i++) {
-     PID_Hits[i] = fPID->GetHits(i);
-     if(PID_Hits[i] == 22 || PID_Hits[i] == 23) pizzahit=true;
- }
-
- nVeto_Hits = fVeto->GetNhits();
-
- /*for(int i=0; i<nVeto_Hits; i++) {
-     if(pizzahitprot == true){
-         TrefferPCProtVeto->Fill(fVeto->GetHits(i));
-     }
- }*/
-
- if(pizzahit == true){
+ // Counts Veto Hits, when Pizza Detector was hit
+ if(pizzahit){
     for(int i=0; i<nVeto_Hits; i++) {
         Treffer->Fill(fVeto->GetHits(i));
-        if(pizzahitprot == true){
-            TrefferProt->Fill(fVeto->GetHits(i));
-        }
     }
 }
- //printf("PID: %d\t Veto: %d\n", nPID_Hits, nVeto_Hits);
 
-	VarInit();
-
-	//printf("maxADC: %d\t adc124: %d\n", gAR->GetMaxADC(), (gAR->GetADC())[124]);
-	hist[0]->Fill((gAR->GetADC())[124]);
-	hist[1]->Fill((gAR->GetADC())[125]);
-        hist[2]->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-	//cout << "NStore: " << gAR->GetMulti(2002)->GetNstore() << endl;
-	for(int i=0; i<gAR->GetMulti(2002)->GetNstore(); i++)
-		hist[3]->Fill(gAR->GetMulti(2002)->GetHit(i));
-	for(int i=0; i<gAR->GetMulti(2003)->GetNstore(); i++)
-		hist[4]->Fill(gAR->GetMulti(2003)->GetHit(i));
-        count->Fill(1);
-
-	if(gAR->GetMulti(2002)->GetNstore() == 1)
-	{
-		if(gAR->GetMulti(2003)->GetNstore() == 1)
-		{
-                        count->Fill(8);
-			hist[5]->Fill(gAR->GetMulti(2002)->GetHit(0) - gAR->GetMulti(2003)->GetHit(0));
-                        //hist[6]->Fill(gAR->GetMulti(2002)->GetHit(0) + gAR->GetMulti(2003)->GetHit(0));
-		}
-	}
-
-        for(int i = 0; i < nProton; i++){
+ // Counts Protons in BaF2 regions ; Protons from BasePhysics
+ for(int i = 0; i < nProton; i++){
             if(std::find(dCrystals.begin(), dCrystals.end(), Proton[i].GetCentralIndex()) != dCrystals.end())
                 count->Fill(2);
             if(std::find(coveredCrystals.begin(), coveredCrystals.end(), Proton[i].GetCentralIndex()) != coveredCrystals.end())
@@ -307,88 +325,77 @@ void TA2MesonPhysics::Reconstruct()
                 count->Fill(6);
         }
 
-        if(nProtonMarc > 0)
-            hist[6]->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-
-
-        UInt_t TAPS_ADC_sum;
-        if(nProtonMarc > 0){
-           TAPS_ADC_sum = 0;
-           for (std::vector<Int_t>::iterator it = coveredCrystals.begin() ; it != coveredCrystals.end(); ++it)
-                TAPS_ADC_sum += (BaF2->GetADC())[*it];
-          // TAPS_adcarea->Fill(TAPS_ADC_sum);
-       }
+ // ADC Spectra Pizza Detector for different Particles from BasePhysics with Loop over different BaF2 regions
 
         bool alreadyFilled = false;
+        // Proton in TAPS
         if(nProtonMarc > 0)
             for(int i = 0; i < nProtonMarc; i++)
+                // Only BaF2, which could possibly be behind the Pizza Detector
                 if(std::find(coveredCrystals.begin(), coveredCrystals.end(), ProtonMarc[i].GetCentralIndex()) != coveredCrystals.end()){
                      if(!alreadyFilled){
                         adcarea->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        dEvE_BaF2area->Fill(ProtonMarc[i].GetP4().E()-ProtonMarc[i].GetP4().M(),(gAR->GetADC())[124] + (gAR->GetADC())[125]);
                         alreadyFilled = true;
                     }
                      count->Fill(5);
                 }
 
-        if(nProtonMarc > 0){
-           TAPS_ADC_sum = 0;
-           for (std::vector<Int_t>::iterator it = fcoveredCrystals.begin() ; it != fcoveredCrystals.end(); ++it)
-                TAPS_ADC_sum += (BaF2->GetADC())[*it];
-          // TAPS_adcfull->Fill(TAPS_ADC_sum);
-       }
-
-        alreadyFilled = false;
-        if(nProtonMarc > 0)
-            for(int i = 0; i < nProtonMarc; i++)
-                if(std::find(fcoveredCrystals.begin(), fcoveredCrystals.end(), ProtonMarc[i].GetCentralIndex()) != fcoveredCrystals.end()){
-                    if(!alreadyFilled){
-                    adcfull->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-                    alreadyFilled = true;
-                }
-                 count->Fill(7);
-                }
-
-        if(nProtonMarc > 0){
-           TAPS_ADC_sum = 0;
-           for (std::vector<Int_t>::iterator it = dCrystals.begin(); it != dCrystals.end(); ++it)
-                TAPS_ADC_sum += (BaF2->GetADC())[*it];
-          // TAPS_adcdiff->Fill(TAPS_ADC_sum);
-       }
-
-        alreadyFilled = false;
-        if(nProtonMarc > 0)
-            for(int i = 0; i < nProtonMarc; i++)
-                if(std::find(dCrystals.begin(), dCrystals.end(), ProtonMarc[i].GetCentralIndex()) != dCrystals.end()){
-                    if(!alreadyFilled){
+        bool alreadyFilled1 = false;
+        // Proton in TAPS
+        if(nProtonMarc1 > 0)
+            for(int i = 0; i < nProtonMarc1; i++)
+                // Only BaF2, which are definitely not behind the Pizza Detector
+                if(std::find(dCrystals.begin(), dCrystals.end(), ProtonMarc1[i].GetCentralIndex()) != dCrystals.end()){
+                    if(!alreadyFilled1){
                     adcdiff->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-                    alreadyFilled = true;
+                    dEvE_BaF2diff->Fill(ProtonMarc1[i].GetP4().E()-ProtonMarc1[i].GetP4().M(),(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                    alreadyFilled1 = true;
                 }
                  count->Fill(3);
                 }
 
-        if(nProtonMarc > 0){
-           TAPS_ADC_sum = 0;
-           for (std::vector<Int_t>::iterator it = fcoveredCrystal.begin() ; it != fcoveredCrystal.end(); ++it)
-                TAPS_ADC_sum += (BaF2->GetADC())[*it];
-          // TAPS_adcfull1->Fill(TAPS_ADC_sum);
-       }
-
-        alreadyFilled = false;
-        if(nProtonMarc > 0)
-            for(int i = 0; i < nProtonMarc; i++)
-                if(std::find(fcoveredCrystal.begin(), fcoveredCrystal.end(), ProtonMarc[i].GetCentralIndex()) != fcoveredCrystal.end()){
-                    if(!alreadyFilled){
-                    adcfull1->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
-                    alreadyFilled = true;
+        bool alreadyFilled2 = false;
+        // Proton in TAPS
+        if(nProtonMarc2 > 0)
+            for(int i = 0; i < nProtonMarc2; i++)
+                // Only BaF2, which are definitely (at least 80-90%)  behind the Pizza Detector
+                if(std::find(fcoveredCrystals.begin(), fcoveredCrystals.end(), ProtonMarc2[i].GetCentralIndex()) != fcoveredCrystals.end()){
+                    if(!alreadyFilled2){
+                    adcfull->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                    dEvE_BaF2full->Fill(ProtonMarc2[i].GetP4().E()-ProtonMarc2[i].GetP4().M(),(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                    alreadyFilled2 = true;
                 }
                  count->Fill(9);
                 }
-/*        for(int i = 0; i < nProtonMarc; i++){
-            ProtonMarc[i].GetCentralIndex()
-        }*/
-	
 
-  
+
+        bool alreadyFilled3 = false;
+        // Photon in TAPS
+        if(nPhotonMarc > 0)
+            for(int i = 0; i < nPhotonMarc; i++)
+                // Only BaF2, which could possibly be behind the Pizza Detector
+                if(std::find(coveredCrystals.begin(), coveredCrystals.end(), PhotonMarc[i].GetCentralIndex()) != coveredCrystals.end()){
+                     if(!alreadyFilled3){
+                        adcarea1->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        dEvE_adcarea1->Fill(PhotonMarc[i].GetP4().E()-PhotonMarc[i].GetP4().M(),(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        alreadyFilled3 = true;
+                    }
+                }
+
+        bool alreadyFilled4 = false;
+        // PiPLus in TAPS
+        if(nPiPlusMarc > 0)
+            for(int i = 0; i < nPiPlusMarc; i++)
+                // Only BaF2, which could possibly be behind the Pizza Detector
+                if(std::find(coveredCrystals.begin(), coveredCrystals.end(), PiPlusMarc[i].GetCentralIndex()) != coveredCrystals.end()){
+                     if(!alreadyFilled4){
+                        adcarea2->Fill((gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        dEvE_adcarea2->Fill(PiPlusMarc[i].GetP4().E()-PiPlusMarc[i].GetP4().M(),(gAR->GetADC())[124] + (gAR->GetADC())[125]);
+                        alreadyFilled4 = true;
+                    }
+                }
+
   //Clean up and set EBufferEnd end markers for arrays
   TermArrays();
 }

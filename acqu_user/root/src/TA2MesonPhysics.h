@@ -23,24 +23,24 @@ private:
         TH1*	cuthist;
         TH1*	cuthist1;
         TH1*	adcarea;    // TAPS Crystals + ADC maybe covered
+        TH1*	adcarea1;    // TAPS Crystals + ADC maybe covered
+        TH1*	adcarea2;    // TAPS Crystals + ADC maybe covered
         TH1*	adcfull;    // TAPS Crystals + ADC fully covered
-        TH1*	adcfull1;    // TAPS Crystals + ADC fully covered -1
         TH1*	adcdiff;    // TAPS Crystals + ADC far away from module
         TH1*	precuthist;
-        /*TH1*    TAPS_adcarea;
-        TH1*    TAPS_adcfull;
-        TH1*    TAPS_adcfull1;
-        TH1*    TAPS_adcdiff;*/
+        TH1*    ADC_PizzaHitBaF2area;
+        TH1*    VetoADC_BaF2area;
+        TH1*    VetoADC_BaF2full;
+        TH1*	ADC_moeglicheKristalle;
+        TH1*	Test;
         TH1*	count;
+        TH1*    ADC_CutCrystals;
         TH1*	Treffer;
         TH1*	TrefferProt;
-        TH1*	TrefferVeto;
+        TH1*	TrefferProt1;
         TH1*	TrefferProtVeto;
-        //TH1*	TrefferPCProtVeto;
         TH1*	EnergyVeto;
-        TH2D*   dEvE[300];
         TH2D*   dEvE_OR;
-        TH2D*   dEvE_OR1;
         TH2D*   dEvE_Pizza;
         TH2D*   dEvE_Pizza1;
         TH2D*   dEvE_Pizza2;
@@ -51,13 +51,21 @@ private:
         TH2D*   VetoCut_dEvE_Veto;
         TH2D*   PizzaCut_dEvE_Pizza;
         TH2D*   PizzaCut_dEvE_Veto;
+        TH2D*   dEvE_BaF2area;
+        TH2D*   dEvE_BaF2diff;
+        TH2D*   dEvE_BaF2full;
+        TH2D*   dEvE_adcarea1;
+        TH2D*   dEvE_adcarea2;
+        TH2D*   ADCvE_PizzaHitBaF2area;
+        TH2D*   ADCvE_ProtonPizzaCutBaF2area;
+        TH2D*   VetovE_ProtPizzaCutBaF2area;
+        TH2D*   VetovE_ProtPizzaCutBaF2full;
         Int_t   nPID_Hits;
         Int_t   nVeto_Hits;
         Int_t*  PID_Hits;
         Int_t*  Veto_Hits;
         std::vector<Int_t> coveredCrystals;
         std::vector<Int_t> fcoveredCrystals;
-        std::vector<Int_t> fcoveredCrystal;
         std::vector<Int_t> dCrystals;
 
     // Begin by initialising Detectors

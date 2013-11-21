@@ -25,8 +25,8 @@ Stream-Spec:    File    Mk2     0      32768    32      0     400
 #February 2011 data:
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #450 MeV Compton, Butanol
-File-Name:  CBTaggTAPS_317.dat  0          0
-File-Name:  CBTaggTAPS_244.dat  0          0
+#File-Name:  CBTaggTAPS_317.dat  0          0
+#File-Name:  CBTaggTAPS_244.dat  0          0
 File-Name:  CBTaggTAPS_245.dat  0          0
 File-Name:  CBTaggTAPS_246.dat  0          0
 File-Name:  CBTaggTAPS_247.dat  0          0
